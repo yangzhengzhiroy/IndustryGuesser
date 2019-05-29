@@ -1,4 +1,4 @@
-`GenderTeller` is meant to replace the existing implemented package `chicksexer` due to obsolete dependencies.
+`IndustryGuesser` is meant to guess the industry of the company based on its name.
 
 ## Installation
 
