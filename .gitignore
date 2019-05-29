@@ -12,6 +12,7 @@ logs/
 .idea/
 .git/
 models/
+data/
 build/
 develop-eggs/
 dist/
