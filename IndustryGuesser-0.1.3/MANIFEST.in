@@ -1,0 +1,4 @@
+include requirements.txt
+include README.md
+graft industryguesser/models/
+exclude model*.h5
