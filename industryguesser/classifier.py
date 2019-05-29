@@ -27,10 +27,10 @@ class SimpleCNN(object):
     _classifier_graph_file_name = 'model_graph.json'
     _classifier_weights_next_name = 'model_weights_next.h5'
     _classifier_graph_next_name = 'graph_next.json'
-    _classifier_weights_path = os.path.join(PARENT_DIR, 'models', _classifier_weights_file_name)
-    _classifier_graph_path = os.path.join(PARENT_DIR, 'models', _classifier_graph_file_name)
-    _classifier_weights_next_path = os.path.join(PARENT_DIR, 'models', _classifier_weights_next_name)
-    _classifier_graph_next_path = os.path.join(PARENT_DIR, 'models', _classifier_graph_next_name)
+    _classifier_weights_path = os.path.join(PARENT_DIR, 'industryguesser/models', _classifier_weights_file_name)
+    _classifier_graph_path = os.path.join(PARENT_DIR, 'industryguesser/models', _classifier_graph_file_name)
+    _classifier_weights_next_path = os.path.join(PARENT_DIR, 'industryguesser/models', _classifier_weights_next_name)
+    _classifier_graph_next_path = os.path.join(PARENT_DIR, 'industryguesser/models', _classifier_graph_next_name)
 
     def __init__(self, lower=True, pad_size=18, padding='post', embedding_size=256, filters=128,
                  kernel_size=3, pool_size=3, cnn_dropout=0.2, optimizer='adam', loss='binary_crossentropy',

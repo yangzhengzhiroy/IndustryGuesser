@@ -1,4 +1,4 @@
 include requirements.txt
 include README.md
-graft models/
+graft industryguesser/models/
 exclude model*.h5

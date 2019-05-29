@@ -39,7 +39,7 @@ class KerasBatchGenerator(object):
 class IndustryEncoder(object):
     """ Encode the gender to categories. """
     _ind_encoder_file_name = 'industry_encoder.pkl'
-    _encoder_path = os.path.join(PARENT_DIR, 'models', _ind_encoder_file_name)
+    _encoder_path = os.path.join(PARENT_DIR, 'industryguesser/models', _ind_encoder_file_name)
 
     def __init__(self):
         self._ind_encoder = None
@@ -99,9 +99,9 @@ class IndustryEncoder(object):
 class CompanyEncoder(object):
     """ Encode the name list into encoded char-to-int 2-D numpy array. """
     _com_encoder_file_name = 'company_encoder.pkl'
-    _encoder_path = os.path.join(PARENT_DIR, 'models', _com_encoder_file_name)
+    _encoder_path = os.path.join(PARENT_DIR, 'industryguesser/models', _com_encoder_file_name)
 
-    def __init__(self, lower=True, pad_size=21, padding='post'):
+    def __init__(self, lower=True, pad_size=18, padding='post'):
         self._lower = lower
         self._com_encoder = None
         self._fit = False

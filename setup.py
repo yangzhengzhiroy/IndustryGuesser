@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 __author__ = 'yang zhengzhi'
 __email__ = 'yangzhengzhi.roy@gmail.com'
 __url__ = 'https://pypi.org/project/IndustryGuesser/'
@@ -19,14 +19,10 @@ setup(
     author=__author__,
     author_email=__email__,
     url=__url__,
-    download_url='https://github.com/yangzhengzhiroy/IndustryGuesser/archive/v0.1.1.tar.gz',
+    download_url='https://github.com/yangzhengzhiroy/IndustryGuesser/archive/v0.1.2.tar.gz',
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3.6",
-    ],
-    data_files=[
-        ('models', ['models/model_graph.json', 'models/industry_encoder.pkl',
-                    'models/model_weights.h5', 'models/company_encoder.pkl'])
     ],
     packages=find_packages(),
     install_requires=requirements,

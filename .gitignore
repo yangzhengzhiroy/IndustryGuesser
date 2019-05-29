@@ -13,6 +13,7 @@ logs/
 .git/
 models/
 models_local/
+industryguesser/models/
 data/
 build/
 develop-eggs/
