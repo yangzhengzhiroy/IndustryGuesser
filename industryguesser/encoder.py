@@ -137,7 +137,7 @@ class CompanyEncoder(object):
         except (TypeError, AttributeError) as e:
             logger.exception(f'text_clean [{company}]: {e}')
 
-    def fit(self, companies, num_words=290000):
+    def fit(self, companies, num_words=200000):
         """ Fit the new encoder if not loaded. """
         clean_companies = [self.text_clean(company) for company in companies]
         self._com_encoder = Tokenizer(num_words=num_words)

@@ -12,6 +12,7 @@ logs/
 .idea/
 .git/
 models/
+models_local/
 data/
 build/
 develop-eggs/

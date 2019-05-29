@@ -32,12 +32,11 @@ class SimpleCNN(object):
     _classifier_weights_next_path = os.path.join(PARENT_DIR, 'models', _classifier_weights_next_name)
     _classifier_graph_next_path = os.path.join(PARENT_DIR, 'models', _classifier_graph_next_name)
 
-    def __init__(self, lower=True, pad_size=21, padding='post', embedding_size=300, input_len=21, filters=128,
+    def __init__(self, lower=True, pad_size=18, padding='post', embedding_size=256, filters=128,
                  kernel_size=3, pool_size=3, cnn_dropout=0.2, optimizer='adam', loss='binary_crossentropy',
                  metrics=None):
         self._pad_size = pad_size
         self._embedding_size = embedding_size
-        self._input_len = input_len
         self._filters = filters
         self._kernel_size = kernel_size
         self._pool_size = pool_size
