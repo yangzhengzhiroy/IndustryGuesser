@@ -11,8 +11,8 @@ __pycache__/
 logs/
 .idea/
 .git/
-models/
-models_local/
+**/models/
+**/models_local/
 industryguesser/models/
 data/
 build/
