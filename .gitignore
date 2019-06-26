@@ -12,7 +12,7 @@ logs/
 .idea/
 .git/
 **/models/
-**/models_online/
+models_online/
 industryguesser/models/
 data/
 build/
