@@ -9,7 +9,6 @@ from subprocess import Popen, PIPE
 from .utils import log_config, setup_logging
 from industryguesser import PARENT_DIR, ind_cutoff
 from sklearn.model_selection import train_test_split
-import tensorflow as tf
 import tensorflow.keras.backend as K
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import model_from_json
@@ -48,8 +47,6 @@ class SimpleCNN(object):
         self._com_encoder = CompanyEncoder(lower, pad_size, padding)
         self._vocab_size = None
         self._ind_encoder = IndustryEncoder()
-        self._graph = tf.get_default_graph()
-        self._sess = tf.Session()
         self._model = None
 
     def _encode_company(self, companies, fit=False):
@@ -107,19 +104,15 @@ class SimpleCNN(object):
             f.write(model.to_json())
 
         # Load the trained model.
-        with self._graph.as_default():
-            with self._sess.as_default():
-                self._model = model
+        self._model = model
 
     def load(self, model_weights_path=_classifier_weights_path, model_graph_path=_classifier_graph_path):
         """ Load the existing master model. """
         K.clear_session()
         with open(model_graph_path, 'r') as f:
             model_graph = f.read()
-        with self._graph.as_default():
-            with self._sess.as_default():
-                self._model = model_from_json(model_graph)
-                self._model.load_weights(model_weights_path)
+        self._model = model_from_json(model_graph)
+        self._model.load_weights(model_weights_path)
 
     def update(self, companies, industries, split_rate=0.2, batch_size=64, patience=1,
                model_weights_next_path=_classifier_weights_next_path, model_graph_next_path=_classifier_graph_next_path,
@@ -163,9 +156,7 @@ class SimpleCNN(object):
         if not self._model:
             self.load()
         companies = self._encode_company(companies)
-        with self._graph.as_default():
-            with self._sess.as_default():
-                y_pred_prob = self._model.predict(companies)
+        y_pred_prob = self._model.predict(companies)
         y_pred_prob_max = np.max(y_pred_prob, axis=1)
         y_pred_class = np.argmax(y_pred_prob, axis=1)
         y_pred_class = self._ind_encoder.decode(y_pred_class)
