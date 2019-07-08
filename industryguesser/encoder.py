@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """
-This module prepares the input names and gender label.
+This module prepares the input company names and industry label.
 """
 import os
 import re
@@ -37,7 +37,7 @@ class KerasBatchGenerator(object):
 
 
 class IndustryEncoder(object):
-    """ Encode the gender to categories. """
+    """ Encode the industry to categories. """
     _ind_encoder_file_name = 'industry_encoder.pkl'
     _encoder_path = os.path.join(PARENT_DIR, 'industryguesser/models', _ind_encoder_file_name)
 
@@ -47,7 +47,7 @@ class IndustryEncoder(object):
         self._load = False
 
     def fit(self, industries):
-        """ Fit the gender label encoder if needed. """
+        """ Fit the industry label encoder if needed. """
         self._ind_encoder = LabelEncoder()
         self._ind_encoder.fit(list(set(industries)))
 
@@ -57,14 +57,14 @@ class IndustryEncoder(object):
         self._fit = True
 
     def load(self):
-        """ Load the pre-fit gender label encoder. """
+        """ Load the pre-fit industry label encoder. """
         with open(self._encoder_path, 'rb') as f:
             self._ind_encoder = pickle.load(f)
 
         self._load = True
 
     def encode(self, industries):
-        """ Convert gender values to encoded integers. """
+        """ Convert industry values to encoded integers. """
         if not self._ind_encoder:
             self.load()
 
@@ -73,8 +73,8 @@ class IndustryEncoder(object):
 
         return encoded_industries
 
-    def decode(self, y_pred):
-        """ Convert gender values to encoded integers. """
+    def decode(self, y_pred, ):
+        """ Convert prediction values to respective industry labels. """
         if not self._ind_encoder:
             self.load()
 
@@ -97,7 +97,7 @@ class IndustryEncoder(object):
 
 
 class CompanyEncoder(object):
-    """ Encode the name list into encoded char-to-int 2-D numpy array. """
+    """ Encode the company list into encoded tokenized 2-D numpy array. """
     _com_encoder_file_name = 'company_encoder.pkl'
     _encoder_path = os.path.join(PARENT_DIR, 'industryguesser/models', _com_encoder_file_name)
 
@@ -124,7 +124,7 @@ class CompanyEncoder(object):
              'philippines', 'connecticut', 'argentina', '1', 'malaysia', 'venezuela', 'scotland', '-'}
 
     def text_clean(self, company):
-        """ Clean the input name string. """
+        """ Clean the input company name string. """
         try:
             if self._lower:
                 company = company.lower()
@@ -155,7 +155,7 @@ class CompanyEncoder(object):
         self._load = True
 
     def encode(self, companies):
-        """ Encode all input names. """
+        """ Encode all input companies. """
         if not self._com_encoder:
             self.load()
 

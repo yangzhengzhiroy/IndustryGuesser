@@ -50,7 +50,7 @@ class SimpleCNN(object):
         self._model = None
 
     def _encode_company(self, companies, fit=False):
-        """ Encode the input names with NameEncoder. """
+        """ Encode the input companies with IndustryEncoder. """
         if fit:
             self._com_encoder.fit(companies)
         encoded_companies = self._com_encoder.encode(companies)
@@ -59,7 +59,7 @@ class SimpleCNN(object):
         return encoded_companies
 
     def _encode_industry(self, industries, fit=False):
-        """ Encode the input genders with GenderEncoder. """
+        """ Encode the input industries with IndustryEncoder. """
         if fit:
             self._ind_encoder.fit(industries)
 
@@ -152,11 +152,54 @@ class SimpleCNN(object):
         move_file.communicate()
 
     def predict(self, companies, return_prob=False, cutoff=ind_cutoff):
-        """ This function predicts the gender with given names. """
+        """ This function predicts the industries with given companies. """
         if not self._model:
             self.load()
         companies = self._encode_company(companies)
         y_pred_prob = self._model.predict(companies)
+        y_pred_prob_max = np.max(y_pred_prob, axis=1)
+        y_pred_class = np.argmax(y_pred_prob, axis=1)
+        y_pred_class = self._ind_encoder.decode(y_pred_class)
+        y_pred_class = np.where(y_pred_prob_max >= cutoff, y_pred_class, None)
+        if return_prob:
+            return [{'industry': pred, 'prob': [{key: value} for key, value in zip(self._ind_encoder.classes, prob)]}
+                    for pred, prob in zip(y_pred_class, y_pred_prob)]
+        else:
+            return y_pred_class.tolist()
+
+
+class IndustryModel(object):
+    """ Character-based bi-directional LSTM model. """
+    _classifier_weights_file_name = 'model_weights.h5'
+    _classifier_graph_file_name = 'model_graph.json'
+    _classifier_weights_path = os.path.join(PARENT_DIR, 'industryguesser/models', _classifier_weights_file_name)
+    _classifier_graph_path = os.path.join(PARENT_DIR, 'industryguesser/models', _classifier_graph_file_name)
+
+    def __init__(self):
+        self._com_encoder = CompanyEncoder(lower=True, pad_size=18, padding='post')
+        self._ind_encoder = IndustryEncoder()
+
+    def _encode_company(self, companies, fit=False):
+        """ Encode the input companies with CompanyEncoder. """
+        if fit:
+            self._com_encoder.fit(companies)
+        encoded_companies = self._com_encoder.encode(companies)
+
+        return encoded_companies
+
+    @classmethod
+    def load(cls):
+        K.clear_session()
+        with open(cls._classifier_graph_path, 'r') as f:
+            model_graph = f.read()
+        model = model_from_json(model_graph)
+        model.load_weights(cls._classifier_weights_path)
+        return model
+
+    def predict(self, model, companies, return_prob=False, cutoff=ind_cutoff):
+        """ This function predicts the industry with given companies. """
+        companies = self._encode_company(companies)
+        y_pred_prob = model.predict(companies)
         y_pred_prob_max = np.max(y_pred_prob, axis=1)
         y_pred_class = np.argmax(y_pred_prob, axis=1)
         y_pred_class = self._ind_encoder.decode(y_pred_class)
